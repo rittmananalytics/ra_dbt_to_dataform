@@ -151,7 +151,47 @@ The following dbt_utils functions are automatically converted to their BigQuery 
      ```
    - The API returns either "Valid" or a corrected version of the SQLX code with explanations.
 
-## Unsupported dbt Features
+# Installation
+
+1. Clone this repository:
+```
+git clone https://github.com/your-username/dbt-to-dataform.git
+```
+2. Navigate to the project root directory:
+```
+cd dbt-to-dataform
+```
+3. Install the package:
+```
+pip install -e .
+```
+## Usage
+
+After installation, you can use the tool from the command line:
+
+```bash
+dbt-to-dataform <dbt_repo_path> <output_path> --openai-api-key <your-api-key> --verbose
+```
+
+<dbt_repo_path>: Path to the local dbt repository
+<output_path>: Path to output the Dataform project
+--openai-api-key: Optional. Your OpenAI API key for complex conversions and syntax checking
+--verbose: Optional. Enable verbose output
+
+## Post-Conversion Steps
+After running the converter:
+
+Review the conversion_report.json and conversion_summary.txt files
+Address any issues highlighted in the conversion report
+Review and test all converted models, especially those flagged in the report
+Implement any custom logic that couldn't be automatically converted
+Update any remaining dbt-specific syntax or functions that weren't automatically handled
+
+## Limitations
+
+Complex dbt macros may require manual adjustment after conversion
+Custom dbt tests might need additional implementation in Dataform
+The tool assumes a BigQuery setup; adjustments may be needed for other warehouses
 
 While this converter handles many aspects of dbt projects, some features are not currently supported or require manual intervention:
 
@@ -173,48 +213,3 @@ While this converter handles many aspects of dbt projects, some features are not
 
 Always review the conversion report and test thoroughly after conversion to ensure all critical functionality is preserved.
 
-# Installation
-
-1. Clone this repository:
-```
-git clone https://github.com/your-username/dbt-to-dataform.git
-```
-2. Navigate to the project root directory:
-```
-cd dbt-to-dataform
-```
-3. Install the package:
-```
-pip install -e .
-```
-## Usage
-
-After installation, you can use the tool from the command line:
-
-```bash
-dbt-to-dataform <dbt_repo_path> <output_path> --openai-api-key <your-api-key> --verbose
-
-<dbt_repo_path>: Path to the local dbt repository
-<output_path>: Path to output the Dataform project
---openai-api-key: Optional. Your OpenAI API key for complex conversions and syntax checking
---verbose: Optional. Enable verbose output
-Post-Conversion Steps
-After running the converter:
-
-Review the conversion_report.json and conversion_summary.txt files
-Address any issues highlighted in the conversion report
-Review and test all converted models, especially those flagged in the report
-Implement any custom logic that couldn't be automatically converted
-Update any remaining dbt-specific syntax or functions that weren't automatically handled
-
-Limitations
-
-Complex dbt macros may require manual adjustment after conversion
-Custom dbt tests might need additional implementation in Dataform
-The tool assumes a BigQuery setup; adjustments may be needed for other warehouses
-Certain dbt-specific features might not have direct equivalents in Dataform
-
-Contributing
-Contributions to improve the converter are welcome. Please submit pull requests with clear descriptions of the changes and their purposes.
-License
-MIT License
