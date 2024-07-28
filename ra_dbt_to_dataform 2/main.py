@@ -150,16 +150,14 @@ def main(dbt_repo_path: str, output_path: str, openai_api_key: str = None, verbo
 
     print("Conversion complete!")
     
-def cli():
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Convert dbt project to Dataform")
     parser.add_argument("dbt_repo_path", help="Path to the local dbt repository")
     parser.add_argument("output_path", help="Path to output the Dataform project")
-    parser.add_argument("--openai-api-key", help="OpenAI API key for complex conversions", default=None)
     parser.add_argument("--verbose", action="store_true", help="Enable verbose output")
+    parser.add_argument("--openai-api-key", help="OpenAI API key for complex conversions", default=None)
 
     args = parser.parse_args()
 
     main(args.dbt_repo_path, args.output_path, args.openai_api_key, args.verbose)
 
-if __name__ == "__main__":
-    cli()
