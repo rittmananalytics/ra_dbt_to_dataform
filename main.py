@@ -116,6 +116,7 @@ def main(dbt_repo_path: str, output_path: str, openai_api_key: str = None, verbo
             )
 
     print("Converting metadata...")
+    metadata_converter = MetadataConverter()
     for yaml_path in artifacts['yaml_files']:
         if yaml_path.name == 'schema.yml':
             try:
