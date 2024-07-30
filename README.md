@@ -1,15 +1,16 @@
 # dbt to Dataform Converter
 
-This tool automates the process of converting dbt (data build tool) projects to Dataform, focusing on BigQuery as the data warehouse. It leverages OpenAI's API for complex conversions and syntax checking.
+This tool partially automates the process of converting dbt (data build tool) projects to Dataform, focusing on BigQuery as the data warehouse. It not a turn-key tool that handles all aspects of the migration for you but takes care of the simple tasks so that you can concentrate on the more complex parts.
+
+It also optionally leverages OpenAI's API for complex conversions and syntax checking; to make use of this feature you will need an OpenAI API key.
 
 # Features
 
-- Converts dbt models to Dataform SQLX files
+- Converts dbt models to Dataform SQLX files, with limitations as detailed below
 - Translates dbt source definitions to Dataform declarations
-- Converts dbt macros to JavaScript functions
-- Migrates dbt tests to Dataform assertions
+- Converts simple dbt macros, and tries to convert more complex ones, to JavaScript functions
 - Preserves project structure, adapting it to Dataform best practices
-- Handles dbt-specific Jinja syntax and converts it to JavaScript
+- Handles (with limitations) dbt-specific Jinja syntax and converts it to JavaScript
 - Supports conversion of dbt variables to Dataform project config variables
 - Automatically converts common dbt_utils functions to their BigQuery equivalents
 - Uses GPT-4 to check and correct Dataform syntax in converted files (requires OpenAI API key)
