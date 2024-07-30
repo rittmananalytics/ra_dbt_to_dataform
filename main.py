@@ -5,6 +5,8 @@ from pathlib import Path
 import yaml
 import traceback
 import sys
+import shutil
+
 
 from dbt_to_dataform.repository_analyzer import RepositoryAnalyzer
 from dbt_to_dataform.model_converter import ModelConverter
@@ -39,6 +41,16 @@ def main(dbt_repo_path: str, output_path: str, openai_api_key: str = None, verbo
     dataform_config_path = Path(output_path) / 'dataform.json'
     project_config_converter = ProjectConfigConverter(dbt_project_path, dataform_config_path)
     project_config_converter.convert()
+
+    definitions_js_path = Path(output_path) / 'definitions.js'
+    if definitions_js_path.exists():
+        # Create the 'definitions' directory if it doesn't exist
+        definitions_dir = Path(output_path) / 'definitions'
+        definitions_dir.mkdir(parents=True, exist_ok=True)
+    
+        # Copy the file
+        shutil.copy(definitions_js_path, definitions_dir / 'definitions.js')
+        print(f"Copied definitions.js to {definitions_dir / 'definitions.js'}")
 
     print("Generating Dataform project structure...")
     project_generator.generate_project_structure()

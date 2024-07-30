@@ -152,17 +152,25 @@ class ModelConverter:
             return f"${{ref('{name}')}}"
 
     def _convert_variables(self, content: str) -> str:
+        def replace_var(match):
+            var_name = match.group(1)
+            var_value = self.project_variables.get(var_name, [])
+            if isinstance(var_value, list):
+                return f"${{dataform.projectConfig.vars.{var_name}}}"
+            else:
+                return f"${{dataform.projectConfig.vars['{var_name}']}}"
+
         # Convert var() references
         content = re.sub(
             r'\{\{\s*var\([\'"](\w+)[\'"]\)\s*\}\}',
-            r'${dataform.projectConfig.vars.\1}',
+            replace_var,
             content
         )
         
         # Convert not var() references
         content = re.sub(
             r'not\s+var\([\'"](\w+)[\'"]\)',
-            r'!dataform.projectConfig.vars.\1',
+            lambda m: f"!dataform.projectConfig.vars['{m.group(1)}']",
             content
         )
         
