@@ -8,7 +8,7 @@ It also optionally leverages OpenAI's API for complex conversions and syntax che
 
 - Converts dbt models to Dataform SQLX files, with limitations as detailed below
 - Translates dbt source definitions to Dataform declarations
-- Converts simple dbt macros, and tries to convert more complex ones, to JavaScript functions
+- Converts dbt macros to Dataform functions using GPT-4 (requires OpenAI API key)
 - Preserves project structure, adapting it to Dataform best practices
 - Handles (with limitations) dbt-specific Jinja syntax and converts it to JavaScript
 - Supports conversion of dbt variables to Dataform project config variables
@@ -16,57 +16,7 @@ It also optionally leverages OpenAI's API for complex conversions and syntax che
 - Uses GPT-4 to check and correct Dataform syntax in converted files (requires OpenAI API key)
 - Generates a detailed conversion report highlighting potential issues and syntax corrections
 
-## Components
-
-1. **RepositoryAnalyzer** (`repository_analyzer.py`)
-   - Analyzes the structure of the dbt project
-   - Identifies models, tests, macros, and YAML files
-
-2. **ModelConverter** (`model_converter.py`)
-   - Converts dbt SQL models to Dataform SQLX files
-   - Handles reference conversions, variable replacements, and macro translations
-
-3. **SourceConverter** (`source_converter.py`)
-   - Converts dbt source definitions to Dataform source declarations
-   - Creates individual SQLX files for each source table
-
-4. **MacroConverter** (`macro_converter.py`)
-   - Converts dbt macros to Dataform JavaScript functions
-   - Uses OpenAI API for complex macro conversions
-
-5. **ProjectConfigConverter** (`project_config_converter.py`)
-   - Converts dbt project configuration to Dataform config
-   - Handles variable translations and project-wide settings
-
-6. **ProjectGenerator** (`project_generator.py`)
-   - Generates the Dataform project structure
-
-7. **SyntaxChecker** (`syntax_checker.py`)
-   - Uses OpenAI API to check and correct Dataform syntax in converted files
-
-8. **ConversionReport** (`conversion_report.py`)
-   - Generates a detailed report of the conversion process
-   - Highlights potential issues and syntax corrections
-
-9. **Main Script** (`main.py`)
-   - Orchestrates the entire conversion process
-   - Handles command-line arguments and initializes components
-
-## OpenAI API Usage
-
-This tool utilizes the OpenAI API in two main areas:
-
-1. **Complex Macro Conversions**: 
-   - The `MacroConverter` class uses the OpenAI API to convert complex dbt macros to Dataform JavaScript functions.
-   - It sends the dbt macro code to the API and receives a converted JavaScript function.
-
-2. **Syntax Checking and Correction**:
-   - The `SyntaxChecker` class uses the OpenAI API to verify and correct the syntax of converted Dataform files.
-   - It sends the converted SQLX content to the API, which checks for Dataform-specific syntax issues and suggests corrections.
-
-The OpenAI API key is optional but recommended for better conversion results, especially for complex macros and ensuring Dataform-compliant syntax.
-
-## How does it work
+## How does it work?
 
 The migration tool employs a combination of rule-based transformations for standard conversions and AI-powered processing for more complex scenarios. This hybrid approach enables the tool to handle both straightforward translations and nuanced, context-dependent conversions effectively.
 
@@ -92,7 +42,7 @@ The migration process comprises seven steps:
 
 5. **Macro Conversion**:
    - The MacroConverter transforms dbt macros into Dataform JavaScript functions.
-   - Complex macros are converted using the OpenAI API.
+   - Macros are converted using the OpenAI API, for manual review, correction and completion
 
 6. **Syntax Checking and Correction**:
    - The SyntaxChecker uses the OpenAI API to verify and correct Dataform syntax in converted files.
@@ -118,8 +68,9 @@ The following dbt_utils functions are automatically converted to their BigQuery 
 
 ## Use of OpenAI API
 
-1. **Complex Macro Conversions**:
-   - The MacroConverter sends complex dbt macros to the OpenAI API for conversion.
+1. **dbt Jinja Macro Conversions**:
+   - The `MacroConverter` class uses GPT-4, via the OpenAI API, to convert dbt Jinja macros to Dataform JavaScript functions.
+   - It sends the dbt macro code to the API and receives a converted JavaScript function.
    - Prompt example:
      ```
      Convert the following dbt macro to a JavaScript function for Dataform:
@@ -138,7 +89,8 @@ The following dbt_utils functions are automatically converted to their BigQuery 
    - The API returns a JavaScript function that can be used in Dataform.
 
 2. **Syntax Checking and Correction**:
-   - The SyntaxChecker sends converted SQLX content to the OpenAI API for verification and correction.
+   - The `SyntaxChecker` class uses GPT-4, via the OpenAI API, to verify and correct the syntax of converted Dataform files.
+   - It sends the converted SQLX content to the API, which checks for Dataform-specific syntax issues and suggests corrections.
    - Prompt example:
      ```
      Check if the following Dataform SQLX code is valid. If it's not valid, correct it and explain the changes made.
