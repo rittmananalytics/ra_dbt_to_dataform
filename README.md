@@ -1,6 +1,6 @@
 # dbt to Dataform Converter
 
-This tool partially automates the process of converting dbt (data build tool) projects to Dataform, focusing on BigQuery as the data warehouse. It not a turn-key tool that handles all aspects of the migration for you but takes care of the simple tasks so that you can concentrate on the more complex parts.
+This tool partially automates the process of converting dbt (data build tool) projects to Dataform, focusing on BigQuery as the data warehouse. It not a turn-key tool that handles all aspects of the migration for you, but it will take care of the simple (and some more complex) tasks so that you can concentrate on the more complex parts.
 
 It also optionally leverages OpenAI's API for complex conversions and syntax checking; to make use of this feature you will need an OpenAI API key.
 
